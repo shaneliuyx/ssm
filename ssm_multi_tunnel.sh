@@ -148,7 +148,7 @@ function loadSSHKey {
 function SSMPortForward {
     local remotePort="$1"
     local localPort="$2"
-   # Start SSM session with port forwarding enabled listening locally on port 2200
+   # Start SSM session with port forwarding enabled listening locally 
    echo -ne "Starting SSM Port Forwarding (local port:$localPort).........\r"
    aws ssm start-session --target $instanceId --document-name $ssmDoc --parameters "{\"portNumber\":[\"$remotePort\"],\"localPortNumber\":[\"$localPort\"]}" --region $AWS_DEFAULT_REGION &
 
