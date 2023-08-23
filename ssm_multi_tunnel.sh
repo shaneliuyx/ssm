@@ -275,7 +275,7 @@ echo '#############################################'
 echo '#  AWS SSM Session Manager Multi Forwarder  #'
 echo '#############################################'
 
-options=("SSM Port FWD" "SSH Port FWD" "SSH Socks PXY" "Display Vars" "Set Port FWD Vars" "Set Socks PXY Vars" "Set AWS Region" "List SSH Tunnels" "Connect to Windows via SSM" "Connect to Windows via SSH Port Foward" "Quit")
+options=("SSM Port FWD" "SSH Port FWD" "SSH Socks PXY" "Display Vars" "Set Port FWD Vars" "Set Socks PXY Vars" "Set AWS Region" "List SSH Tunnels" "Connect to Windows via SSM" "Connect to Windows via Port Foward" "Quit")
 while true; do 
     echo ""
     select opt in "${options[@]}"  
