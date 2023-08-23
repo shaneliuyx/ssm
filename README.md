@@ -8,10 +8,9 @@ If the Bastion server is operating within the AWS China region, you must have a 
 Steps to set up:
 
 1. Define the AWS Region.
-
 2. Before utilizing the "SSH Port FWD" feature, execute the "Set Port FWD Vars" 
-
-3. Prior to using the "SSH Socks PXY" function, initiate the "Set Socks PXY Vars"  
+3. Prior to using the "SSH Socks PXY" function, initiate the "Set Socks PXY Vars"
+4. You need to set remote host via "Set Port FWD Vars"  before using ssm related function.
 
 
 The script will find an avaialble local port automatically. 
