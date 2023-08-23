@@ -1,5 +1,5 @@
 # ssm
-ssm client side tools
+ssm client side tools running on MacOS
 
 The Bastion server must be labeled with a tag named "ServerRole" and its value should be "JumpServers".
 
@@ -14,3 +14,6 @@ Steps to set up:
 3. Prior to using the "SSH Socks PXY" function, initiate the "Set Socks PXY Vars"  
 
 
+The script will find an avaialble local port automatically. 
+If you input a name (or a sub-string of a host name) for a remote host that matches more than 1 servers, you need to select which IP you intend to use.
+You need to install Microsoft Remote Desktop before connecting with a Windows server.
