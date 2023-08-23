@@ -25,6 +25,7 @@ remotePort="80"
 AWS_DEFAULT_REGION='cn-north-1'
 ssmUser="ec2-user"
 ssmDoc="AWS-StartPortForwardingSession"
+ssmDocRemote="AWS-StartPortForwardingSessionToRemoteHost"
 
 # Get parameters
 while [[ $1 != "" ]]
@@ -148,9 +149,17 @@ function loadSSHKey {
 function SSMPortForward {
     local remotePort="$1"
     local localPort="$2"
-   # Start SSM session with port forwarding enabled listening locally 
-   echo -ne "Starting SSM Port Forwarding (local port:$localPort).........\r"
-   aws ssm start-session --target $instanceId --document-name $ssmDoc --parameters "{\"portNumber\":[\"$remotePort\"],\"localPortNumber\":[\"$localPort\"]}" --region $AWS_DEFAULT_REGION &
+    local remoteHost="$3"
+
+    # Start SSM session with port forwarding enabled listening locally on port 2200
+    echo -ne "Starting SSM Port Forwarding (local port:$localPort).........\r"
+
+    # Check if the third parameter is provided
+    if [ -n "$remoteHost" ]; then
+        aws ssm start-session --target $instanceId --document-name $ssmDocRemote --parameters "{\"portNumber\":[\"$remotePort\"],\"localPortNumber\":[\"$localPort\"],\"host\":[\"$remoteHost\"]}" --region $AWS_DEFAULT_REGION &
+    else
+        aws ssm start-session --target $instanceId --document-name $ssmDoc --parameters "{\"portNumber\":[\"$remotePort\"],\"localPortNumber\":[\"$localPort\"]}" --region $AWS_DEFAULT_REGION &
+    fi
 
     if [[ $? != 0 ]]; then
         echo -ne "Starting SSM Port Forwarding.........Error"
@@ -160,6 +169,7 @@ function SSMPortForward {
     echo -ne "Starting SSM Port Forwarding.........Done"
     echo -ne "\n"
 }
+
 
 function SSHSockProxy {
    # Start SSH Socks proxy
@@ -275,8 +285,8 @@ while true; do
                 AppBanner
                 echo "you chose 1"
                 checkDependencies
-                instance_id=$(get_instance_id_from_private_ip "$remoteHost")
-                if pgrep session-m &> /dev/null; then echo "SSM Session Manager already running"; else SSMPortForward $remotePort $localPort ; fi
+                setInstanceIdandAz
+                if pgrep session-m &> /dev/null; then echo "SSM Session Manager already running"; else SSMPortForward $remotePort $localPort $remoteHost ; fi
                 break;;
             "SSH Port FWD")
                 AppBanner
@@ -397,7 +407,7 @@ while true; do
                 # Open the .rdp file with Microsoft Remote Desktop
                 open -a "Microsoft Remote Desktop" $rdpFilePath &
                 break;;
-            "Connect to Windows via SSH Port Foward")
+            "Connect to Windows via Port Foward")
                 AppBanner
                 echo "you chose 10"
                 # Define the path to the .rdp file
