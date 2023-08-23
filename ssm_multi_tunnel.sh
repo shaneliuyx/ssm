@@ -275,7 +275,7 @@ while true; do
                 AppBanner
                 echo "you chose 1"
                 checkDependencies
-                setInstanceIdandAz
+                instance_id=$(get_instance_id_from_private_ip "$remoteHost")
                 if pgrep session-m &> /dev/null; then echo "SSM Session Manager already running"; else SSMPortForward $remotePort $localPort ; fi
                 break;;
             "SSH Port FWD")
